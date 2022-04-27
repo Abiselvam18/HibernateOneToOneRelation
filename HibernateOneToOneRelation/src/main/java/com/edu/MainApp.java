@@ -1,0 +1,36 @@
+package com.edu;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
+
+public class MainApp {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Laptop lob=new Laptop();
+		lob.setLid(1);
+		lob.setLname("Dell");
+		lob.setLprice(50000);
+		
+		Student sob=new Student();
+		sob.setSid(1);
+		sob.setSname("Lavanya");
+		sob.setLp(lob);
+		
+		Configuration conn=new Configuration().configure().addAnnotatedClass(Laptop.class).addAnnotatedClass(Student.class);
+		ServiceRegistry reg=new ServiceRegistryBuilder().applySettings(conn.getProperties()).buildServiceRegistry();
+		SessionFactory sf=conn.buildSessionFactory(reg);
+		Session sess=sf.openSession();
+		Transaction tx=sess.beginTransaction();
+		
+		sess.save(lob);
+		sess.save(sob);
+		tx.commit();
+
+	}
+
+}
